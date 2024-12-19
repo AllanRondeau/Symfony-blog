@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <nav class="flex justify-between items-center p-4 bg-gray-800 text-white">
+        <div class="text-2xl font-bold">Blog</div>
+        <div class="flex items-center">
+            {% if app.user %}
+                <a class="text-sm" href="{{ app_user_profile }}"> {{ app.user.firstname }} {{ app.user.name }}</a>
+                <a class="ml-4 px-4 py-2 rounded-sm border border-white hover:border-red-500 hover:text-red-500 transition-colors duration-200 ease-in" href="{{ path('app_logout') }}">Logout</a>
+            {% else %}
+                <a class="ml-4 px-2 py-4 rounded-sm border-white hover:py-6 hover:px-3 transition ease-in" href="{{ path('app_login') }}">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+    <main>
+        <h1>Welcome to the Blog!</h1>
+    </main>
+
+    <style>
+
+    </style>
+{% endblock %}
