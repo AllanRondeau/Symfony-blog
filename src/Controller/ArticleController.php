@@ -22,20 +22,37 @@ class ArticleController extends AbstractController
         }
 
         $article = $articleRepository->findOneBy(['id' => $id]);
+
         return $this->render('article/index.html.twig', [
             'controller_name' => 'ArticleController',
             'article' => $article,
         ]);
     }
 
-    #[Route('/article/{id}/edit', name: 'app_article_edit')]
-    public function edit(string $id, ArticleRepository $articleRepository, EntityManagerInterface $em): Response
+    #[Route('/article/{id}/edit', name: 'article_edit')]
+    public function edit(string $id, ArticleRepository $articleRepository, Security $security, Request $request, EntityManagerInterface $em): Response
     {
         if (!$id) {
             return $this->redirectToRoute('app_home');
         }
 
+        $user = $security->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $article = $articleRepository->findOneBy(['id' => $id]);
+
+        $form = $this->createForm(ArticleType::class, $article);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($article);
+            $em->flush();
+
+            return $this->redirectToRoute('user_articles', ['id' => $user->getId()]);
+        }
 
         if (!$article) {
             throw $this->createNotFoundException('Article not found');
@@ -44,11 +61,12 @@ class ArticleController extends AbstractController
         return $this->render('article/edit.html.twig', [
             'controller_name' => 'ArticleController',
             'article' => $article,
+            'form' => $form->createView(),
         ]);
     }
 
-    #[Route('/article/{id}/delete', name: 'app_article_delete')]
-    public function delete(string $id, EntityManagerInterface $em, ArticleRepository $articleRepository): Response
+    #[Route('/article/{id}/delete', name: 'article_delete')]
+    public function delete(string $id, EntityManagerInterface $em, ArticleRepository $articleRepository, Security $security): Response
     {
         $article = $articleRepository->findOneBy(['id' => $id]);
 
@@ -56,10 +74,19 @@ class ArticleController extends AbstractController
             throw $this->createNotFoundException('Article not found');
         }
 
+        if($article->getUser()->getId()->toString() !== $security->getUser()->getId()->toString())
+        {
+            return $this->redirectToRoute('app_home');
+        }
+
+        $user = $article->getUser();
+
         $em->remove($article);
         $em->flush();
 
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('user_articles', [
+            'id' => $user->getId(),
+        ]);
     }
 
     #[Route('article/create', name:'article_create')]
@@ -88,6 +115,22 @@ class ArticleController extends AbstractController
         return $this->render('article/create.html.twig', [
             'controller_name' => 'ArticleController',
             'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/article/user/{id}', name: 'user_articles')]
+    public function userArticles(string $id, ArticleRepository $articleRepository): Response
+    {
+        $user = $this->getUser();
+        if (!$user || $user->getId()->toString() !== $id) {
+            return $this->redirectToRoute('app_home');
+        }
+
+        $articles = $articleRepository->findBy(['user' => $user]);
+
+        return $this->render('article/user.html.twig', [
+            'controller_name' => 'ArticleController',
+            'articles' => $articles,
         ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Article;
 use App\Entity\Comment;
 use App\Entity\Users;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -13,6 +14,7 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $users = $manager->getRepository(Users::class)->findAll();
+        $articles = $manager->getRepository(Article::class)->findAll();
 
         if (empty($users)) {
             return;
@@ -24,6 +26,7 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
             $comment->setContent('This is the content of comment ' . ($i + 1));
 
             $comment->setUser($users[array_rand($users)]);
+            $comment->setArticle($articles[array_rand($articles)]);
 
             $manager->persist($comment);
         }
@@ -35,6 +38,7 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             UserFixtures::class,
+            ArticleFixtures::class,
         ];
     }
 }

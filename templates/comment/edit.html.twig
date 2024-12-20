@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier l'article{% endblock %}
+{% block title %}Modifier un commentaire{% endblock %}
 
 {% block body %}
     <div class="max-w-4xl mx-auto mt-12 p-6 bg-white rounded-lg shadow-lg border border-gray-200">
-        <h1 class="text-3xl font-bold text-primary mb-6">Modifier l'article</h1>
-
+        <div class="mb-6">
+            <p class="text-3xl font-bold text-primary ">Modifier un commentaire</p>
+            <p class="text-xl">Article: {{ article.title }}</p>
+        </div>
         <form method="post" enctype="multipart/form-data">
             {{ form_start(form) }}
 
@@ -33,32 +35,8 @@
                 {{ form_errors(form.content) }}
             </div>
 
-            <div class="mb-4">
-                {{ form_label(form.language, 'Language') }}
-                <div>
-                    {{ form_widget(form.language, {
-                        'attr': {
-                            'class': 'mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary'
-                        }
-                    }) }}
-                </div>
-                {{ form_errors(form.language) }}
-            </div>
-
-            <div class="mb-4">
-                {{ form_label(form.category, 'Catégorie') }}
-                <div>
-                    {{ form_widget(form.category, {
-                        'attr': {
-                            'class': 'mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary'
-                        }
-                    }) }}
-                </div>
-                {{ form_errors(form.category) }}
-            </div>
-
             <button class="w-full py-3 px-4 bg-primary text-white font-bold rounded-lg hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary" type="submit">
-                Modifier l'article
+                Créer le commentaire
             </button>
 
             {{ form_end(form) }}

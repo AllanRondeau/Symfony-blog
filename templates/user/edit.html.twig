@@ -1,64 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier l'article{% endblock %}
+{% block title %}Éditer votre profil{% endblock %}
 
 {% block body %}
     <div class="max-w-4xl mx-auto mt-12 p-6 bg-white rounded-lg shadow-lg border border-gray-200">
-        <h1 class="text-3xl font-bold text-primary mb-6">Modifier l'article</h1>
+        <h1 class="text-3xl font-bold text-primary mb-6">Éditez votre profil</h1>
 
         <form method="post" enctype="multipart/form-data">
             {{ form_start(form) }}
 
             <div class="mb-4">
-                {{ form_label(form.title, 'Titre') }}
+                {{ form_label(form.email, 'Email') }}
                 <div>
-                    {{ form_widget(form.title, {
+                    {{ form_widget(form.email, {
                         'attr': {
                             'class': 'mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary'
                         }
                     }) }}
                 </div>
-                {{ form_errors(form.title) }}
+                {{ form_errors(form.email) }}
             </div>
 
             <div class="mb-4">
-                {{ form_label(form.content, 'Contenu') }}
+                {{ form_label(form.name, 'Nom') }}
                 <div>
-                    {{ form_widget(form.content, {
+                    {{ form_widget(form.name, {
                         'attr': {
                             'class': 'mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary'
                         }
                     }) }}
                 </div>
-                {{ form_errors(form.content) }}
+                {{ form_errors(form.name) }}
             </div>
 
             <div class="mb-4">
-                {{ form_label(form.language, 'Language') }}
+                {{ form_label(form.firstname, 'Prénom') }}
                 <div>
-                    {{ form_widget(form.language, {
+                    {{ form_widget(form.firstname, {
                         'attr': {
                             'class': 'mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary'
                         }
                     }) }}
                 </div>
-                {{ form_errors(form.language) }}
-            </div>
-
-            <div class="mb-4">
-                {{ form_label(form.category, 'Catégorie') }}
-                <div>
-                    {{ form_widget(form.category, {
-                        'attr': {
-                            'class': 'mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary'
-                        }
-                    }) }}
-                </div>
-                {{ form_errors(form.category) }}
+                {{ form_errors(form.firstname) }}
             </div>
 
             <button class="w-full py-3 px-4 bg-primary text-white font-bold rounded-lg hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary" type="submit">
-                Modifier l'article
+                Mettre à jour le profil
             </button>
 
             {{ form_end(form) }}

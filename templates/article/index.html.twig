@@ -2,10 +2,14 @@
 
 {% block body %}
     <div class="max-w-4xl mx-auto p-6">
-        <article class="bg-white shadow-md rounded-lg overflow-hidden border border-gray-200">
+        <article class="bg-white shadow-md rounded-lg overflow-hidden border border-gray-200 h-full">
             <header class="p-6 bg-primary text-white">
                 <h1 class="text-3xl font-bold">{{ article.title }}</h1>
                 <p class="mt-2 text-sm">Publié le {{ article.createdAt|date('d/m/Y') }}</p>
+                <div class="flex justify-end space-x-8 mt-3">
+                    <p class="text-black text-sm">Catégorie: {{ article.category.name }}</p>
+                    <p class="text-black text-sm">Langue: {{ article.language.name }}</p>
+                </div>
             </header>
             <div class="p-6 text-black">
                 <p>
@@ -13,6 +17,43 @@
                 </p>
             </div>
         </article>
+        <div>
+            <div class="flex justify-between items-end mb-1">
+                <h2 class="text-xl font-bold text-secondary mt-12">Commentaires</h2>
+                {% if app.user %}
+                    <a href="{{ path('comment_create', {articleId: article.id, userId: app.user.id}) }}"
+                       class="border border-secondary text-secondary text-sm hover:bg-secondary hover:text-white py-1 px-2 rounded-sm ">
+                        Commenter
+                    </a>
+                {% endif %}
+            </div>
+            {% if article.comments is not empty %}
+                {% for comment in article.comments %}
+                    <div class="border-t border-gray-200 p-6">
+                        <p class="text-primary text-xl mb-4">{{ comment.title }}</p>
+                        <p class="text-black text-sm">{{ comment.content }}</p>
+                        <p class="text-gray-500 text-sm mt-2">Publié le {{ comment.createdAt|date('d/m/Y') }}</p>
+
+                        {% if app.user and app.user.id == comment.user.id %}
+                            <div class="flex gap-4 mt-4">
+                                <a href="{{ path('comment_edit', {id: comment.id}) }}"
+                                   class="text-secondary hover:underline text-sm">
+                                    Modifier
+                                </a>
+                                <a href="{{ path('comment_delete', {id: comment.id}) }}"
+                                   class="text-red-600 hover:underline text-sm"
+                                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">
+                                    Supprimer
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-gray-600 text-sm mt-6">Aucun commentaire pour cet article.</p>
+            {% endif %}
+        </div>
+
     </div>
 {% endblock %}
 
