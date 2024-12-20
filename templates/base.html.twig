@@ -13,6 +13,18 @@
         {% endblock %}
     </head>
     <body>
+        <nav class="flex justify-between items-center px-8 py-4 border border-y-black text-primary shadow-md">
+            <a href="{{ path('app_home') }}" class="text-3xl font-bold hover:text-4xl transition-all duration-200">Blog</a>
+            <div class="flex items-center space-x-4">
+                {% if app.user %}
+                    <a class="text-sm hover:font-bold transition-all duration-200" href="{{ path('article_create') }}">Créer un article</a>
+                    <a class="text-sm hover:font-bold transition-all duration-200" href="{{ path('app_user_profile') }}"> {{ app.user.firstname }} {{ app.user.name }}</a>
+                    <a class=" px-4 py-2 rounded-sm border border-primary hover:border-red-500 hover:text-red-500 transition-colors duration-200 ease-in" href="{{ path('app_logout') }}">Déconnexion</a>
+                {% else %}
+                    <a class=" px-4 py-2 rounded-sm border border-primary hover:text-white hover:bg-primary transition-colors duration-200 ease-inn" href="{{ path('app_login') }}">Connexion</a>
+                {% endif %}
+            </div>
+        </nav>
         {% block body %}{% endblock %}
     </body>
 </html>

@@ -25,7 +25,7 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
         for ($i = 0; $i < 10; $i++) {
             $article = new Article();
             $article->setTitle('Article ' . ($i + 1));
-            $article->setContent('This is the content of article ' . ($i + 1));
+            $article->setContent('Lorem ipsum dolor sit amet, consectetur adip odio sit amet, sed diam nonum vul arc tempor  invidunt ut labore et dolore magna aliqu ');
 
             $article->setUser($users[array_rand($users)]);
             $article->setLanguage($languages[array_rand($languages)]);

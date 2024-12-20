@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: LanguagesRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Languages
 {
     use TimestampableTrait;
@@ -35,12 +36,12 @@ class Languages
         $this->articles = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
 
-    public function setId(int $id): static
+    public function setId(Uuid $id): static
     {
         $this->id = $id;
 

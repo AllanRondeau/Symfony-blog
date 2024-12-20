@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Comment
 {
     use TimestampableTrait;
@@ -29,12 +30,12 @@ class Comment
     #[ORM\ManyToOne(inversedBy: 'comments')]
     private ?Users $user = null;
 
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
 
-    public function setId(int $id): static
+    public function setId(Uuid $id): static
     {
         $this->id = $id;
 
